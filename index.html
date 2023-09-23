@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGIS Kedaireka</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="/css/leaflet-sidebar.css" />
+    <link rel="stylesheet" href="/css/L.Control.AccordionLegend.css" />
+
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      html,
+      body,
+      #map {
+        height: 100%;
+        font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+      }
+
+      .lorem {
+        font-style: normal;
+        text-align: justify;
+        color: #000000;
+      }
+
+      .leaflet-control-scale-line {
+        margin-left: 5px;
+      }
+
+      .leaflet-touch .leaflet-control-layers,
+      .leaflet-touch .leaflet-bar {
+        border: 2px none rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- optionally define the sidebar content via HTML markup -->
+    <div id="sidebar" class="leaflet-sidebar collapsed">
+      <!-- nav tabs -->
+      <div class="leaflet-sidebar-tabs">
+        <!-- top aligned tabs -->
+        <ul role="tablist">
+          <li>
+            <a href="#home" role="tab"><i class="fa fa-bars active"></i></a>
+          </li>
+          <li>
+            <a href="#sejarah" role="tab"><i class="fa fa-bank"></i></a>
+          </li>
+          <li>
+            <a href="#layers" role="tab"><i class="fa fa-sliders"></i></a>
+          </li>
+        </ul>
+
+        <!-- bottom aligned tabs -->
+        <ul role="tablist">
+          <li>
+            <a href="https://github.com/hilmyfar"><i class="fa fa-github"></i></a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- panel content -->
+      <div class="leaflet-sidebar-content">
+        <div class="leaflet-sidebar-pane" id="home">
+          <h1 class="leaflet-sidebar-header">
+            WebGIS Kedaireka
+            <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+          </h1>
+          <br />
+          <img
+            src="image/logo desa puncu.png"
+            alt="desa puncu Kediri"
+            style="width: 100%; max-width: 300px; height: auto; padding-bottom: 0"
+            ;
+          />
+          <p style="font-style: oblique; font-weight: bold">
+            Selamat datang di laman WebGIS Kedaireka Desa Puncu, desa penuh potensi di lereng Gunung Kelud!
+          </p>
+          <br />
+          <p>Kecamatan, Kabupaten</p>
+          <b>Puncu, Kediri</b>
+          <p>Jumlah Penduduk</p>
+          <b>8139 jiwa</b>
+          <p>Luas Wilayah</p>
+          <b>10,81 km²</b>
+        </div>
+
+        <div class="leaflet-sidebar-pane" id="sejarah">
+          <h2>Sejarah Desa</h2>
+          <b> Nama Desa Puncu berarti desa yang terletak di bukit yang menonjol, didasarkan pada kisah historis. </b> <br />
+          <p class="lorem">
+            Pada jaman penjajahan Belanda, banyak terjadi perlawanan di daerah-daerah di seluruh wilayah nusantara. Salah satunya wilayah
+            Trunojoyo dari Madura, mereka melakukan serangan dengan gagah berani menyerang sampai Batavia tetapi dikarenakan pihak Belanda
+            dibantu oleh Kerajaan Mataram maka pasukan Trunojoyo mendapat serangan balik dan dipukul mundur dan pasukannya melarikan diri
+            kearah timur kearah Madura. Dan pasukan Mataram beserta pasukan Belanda tetap melakukan pengejaran terhadap pasukan Trunojoyo,
+            dalam pelariannya mereka melewati kediri untuk menuju Gunung Selo Kurung di Ngantang untuk bersembunyi. Dalam perjalanan
+            tersebut para pasukan Trunojoyo singgah di sebuah perbukitan untuk membuat senjata atau bersalin, karena tempat karena tempat
+            mereka tinggi maka mereka dapat melihat musuh dari tempat tersebut atau dari kejauhan. Dikarenakan tempat peristirahatan
+            tersebut berada di bukit yang menonjol, maka orang Jawa menanamkan Puthuk atau Muncu.
+          </p>
+        </div>
+        <div class="leaflet-sidebar-pane" id="layers">
+          <span id="layer-control-container"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="map" class="sidebar-map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" crossorigin=""></script>
+    <script src="js\leaflet-sidebar.js"></script>
+    <script src="js\L.Control.AccordionLegend.js"></script>
+
+    <!-- Replace with the actual path to your GeoJSON data -->
+    <script src="wilayah\admin.js"></script>
+    <script src="survey\ponsur.js"></script>
+    <script src="survey\linsur.js"></script>
+
+    <script>
+      // Standard leaflet map setup
+      var map = L.map("map").setView([-7.8791582, 112.2679629], 13);
+
+      var LAYERS_AND_LEGENDS = [
+        {
+          title: "Peta Dasar",
+          layers: [
+            {
+              title: "OpenStreetMap",
+              layer: new L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+              }),
+              opacityslider: false,
+              legend: [
+                { type: "line", color: "#ffffff", text: "Jaringan Jalan" },
+                { type: "square", color: "#c7c7b4", text: "Bangunan" },
+                { type: "square", color: "#add19e", text: "Vegetasi" },
+                { type: "square", color: "#bdd3d3", text: "Water" },
+              ],
+            },
+            {
+              title: "Google Maps",
+              layer: new L.tileLayer("https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
+                attribution: "Tiles &copy; Google &mdash; Source: Google",
+              }),
+              opacityslider: false,
+              legend: [],
+            },
+            {
+              title: "Google Satellite",
+              layer: L.tileLayer("http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
+                maxZoom: 20,
+                subdomains: ["mt0", "mt1", "mt2", "mt3"],
+                attribution: "Tiles &copy; Google &mdash; Source: Google",
+              }),
+              opacityslider: false,
+              legend: [],
+            },
+          ],
+        },
+        {
+          title: "Peta Administrasi",
+          layers: [
+            {
+              title: "Batas Desa dan Dusun",
+              layer: L.geoJson(admin, {
+                style: function polystyle(feature) {
+                  return {
+                    fillColor: "blue",
+                    weight: 2,
+                    opacity: 1,
+                    color: "white",
+                    fillOpacity: 0.2,
+                  };
+                },
+                onEachFeature: function (feature, layer) {
+                  layer
+                    .bindPopup(feature.properties.Dusun)
+                    .bindTooltip(feature.properties.Dusun, { permanent: true, direction: "center", className: "cuslabel" });
+                },
+                attribution: "Hasil Analisis",
+                maxZoom: 15,
+                zIndex: 1000,
+              }),
+              legend: [
+                { type: "line", color: "#ffffff", text: "Batas Dusun" },
+                { type: "square", color: "blue", text: "Wilayah Desa" },
+              ],
+            },
+          ],
+        },
+        {
+          title: "Peta Potensi Desa",
+          layers: [
+            {
+              title: "Spot Potensial Desa",
+              layer: L.geoJson(ponsur, {
+                pointToLayer: function (feature, latlng) {
+                  var iconColor;
+                  switch (feature.properties.Class) {
+                    case "Wisata Alam":
+                      iconColor = "alam";
+                      break;
+                    case "Wisata Edukasi":
+                      iconColor = "edu";
+                      break;
+                    case "Wisata Budaya":
+                      iconColor = "daya";
+                      break;
+                    case "Fasilitas Penunjang":
+                      iconColor = "fas";
+                      break;
+                    case "Batas Dusun":
+                      iconColor = "dus";
+                      break;
+                  }
+
+                  var smallIcon = L.icon({
+                    iconSize: [27, 27],
+                    iconAnchor: [13, 27],
+                    popupAnchor: [1, -24],
+                    iconUrl: "/icon/" + iconColor + ".png",
+                  });
+                  return L.marker(latlng, { icon: smallIcon });
+                },
+                onEachFeature: function (feature, layer) {
+                  var popupContent =
+                    '<div class="judul-popup">' +
+                    feature.properties.Name +
+                    "</div>" +
+                    '<div class="desk-popup">' +
+                    feature.properties.Desc_ +
+                    "</div>";
+                  layer.bindPopup(popupContent);
+                },
+                attribution: "Hasil Survey, 2023",
+                maxZoom: 15,
+                zIndex: 100,
+              }),
+              legend: [
+                { type: "image", url: "/icon/alam.png", text: "Wisata Alam" },
+                { type: "image", url: "/icon/edu.png", text: "Wisata Edukasi" },
+                { type: "image", url: "/icon/daya.png", text: "Wisata Budaya" },
+                { type: "image", url: "/icon/fas.png", text: "Fasilitas Penunjang" },
+                { type: "image", url: "/icon/dus.png", text: "Gerbang Dusun" },
+              ],
+            },
+            {
+              title: "Rute Wisata Off-road Desa",
+              layer: L.geoJson(linsur, {
+                style: function (feature) {
+                  return {
+                    color: "red", // You can change the color as needed
+                    weight: 2, // Adjust the line weight as needed
+                  };
+                },
+                onEachFeature: function (feature, layer) {
+                  var popupContent =
+                    '<div class="judul-popup">' +
+                    feature.properties.Name +
+                    "</div>" +
+                    '<div class="desk-popup">' +
+                    feature.properties.descriptio +
+                    "</div>";
+                  layer.bindPopup(popupContent);
+                },
+                attribution: "Hasil Survey, 2023",
+                maxZoom: 25,
+                zIndex: 50,
+              }),
+              legend: [{ type: "line", color: "red", text: "" }],
+            },
+          ],
+        },
+      ];
+
+      // Add the scale control to the map
+      L.control.scale().addTo(map);
+
+      // Create the sidebar instance and add it to the map
+      var sidebar = L.control.sidebar({ container: "sidebar", autopan: true }).addTo(map).open("home");
+
+      // Add the layer control accordion
+      var layerControl = new L.Control.AccordionLegend({
+        position: "topleft",
+        content: LAYERS_AND_LEGENDS,
+      }).addTo(map);
+
+      var htmlObject = layerControl.getContainer();
+      var layersTab = document.getElementById("layer-control-container");
+      if (layersTab) {
+        layersTab.appendChild(htmlObject);
+      }
+    </script>
+  </body>
+</html>

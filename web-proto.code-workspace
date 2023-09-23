@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "name": "L.Control.AccordionLegend",
+      "path": "../L.Control.AccordionLegend"
+    }
+  ],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "web-proto"
+  }
+}
