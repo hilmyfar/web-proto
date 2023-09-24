@@ -121,7 +121,7 @@
 
     <!-- Replace with the actual path to your GeoJSON data -->
     <script src="wilayah\admin.js"></script>
-    <script src="survey\poin_survey2.js"></script>
+    <script src="survey\poinsurvey.js"></script>
     <script src="survey\linsurvey.js"></script>
 
     <script>
@@ -201,7 +201,7 @@
           layers: [
             {
               title: "Spot Potensial Desa",
-              layer: L.geoJson(posur2, {
+              layer: L.geoJson(posur, {
                 pointToLayer: function (feature, latlng) {
                   var iconColor;
                   switch (feature.properties.Class) {
