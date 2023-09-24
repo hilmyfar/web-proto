@@ -3,9 +3,10 @@
   <head>
     <title>WebGIS Kedaireka</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1.0, user-scalable=no" />
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="/css/leaflet-sidebar.css" />
     <link rel="stylesheet" href="/css/L.Control.AccordionLegend.css" />
@@ -120,8 +121,8 @@
 
     <!-- Replace with the actual path to your GeoJSON data -->
     <script src="wilayah\admin.js"></script>
-    <script src="survey\ponsur.js"></script>
-    <script src="survey\linsur.js"></script>
+    <script src="survey\poin_survey2.js"></script>
+    <script src="survey\linsurvey.js"></script>
 
     <script>
       // Standard leaflet map setup
@@ -200,7 +201,7 @@
           layers: [
             {
               title: "Spot Potensial Desa",
-              layer: L.geoJson(ponsur, {
+              layer: L.geoJson(posur2, {
                 pointToLayer: function (feature, latlng) {
                   var iconColor;
                   switch (feature.properties.Class) {
@@ -234,6 +235,13 @@
                     '<div class="judul-popup">' +
                     feature.properties.Name +
                     "</div>" +
+                    '<div class="image-popup">' +
+                    '<img src="image_survey/' +
+                    feature.properties.idi +
+                    '.jpg" alt="' +
+                    feature.properties.Name +
+                    '" style="width: 100%; height: auto;" />' +
+                    "</div>" +
                     '<div class="desk-popup">' +
                     feature.properties.Desc_ +
                     "</div>";
@@ -253,11 +261,11 @@
             },
             {
               title: "Rute Wisata Off-road Desa",
-              layer: L.geoJson(linsur, {
+              layer: L.geoJson(linsurvey, {
                 style: function (feature) {
                   return {
                     color: "red", // You can change the color as needed
-                    weight: 2, // Adjust the line weight as needed
+                    weight: 3, // Adjust the line weight as needed
                   };
                 },
                 onEachFeature: function (feature, layer) {
@@ -265,8 +273,15 @@
                     '<div class="judul-popup">' +
                     feature.properties.Name +
                     "</div>" +
+                    '<div class="image-popup">' +
+                    '<img src="image_survey/' +
+                    feature.properties.idi +
+                    '.jpg" alt="' +
+                    feature.properties.Name +
+                    '" style="width: 200px; height: auto;"/>' +
+                    "</div>" +
                     '<div class="desk-popup">' +
-                    feature.properties.descriptio +
+                    feature.properties.Desc_ +
                     "</div>";
                   layer.bindPopup(popupContent);
                 },

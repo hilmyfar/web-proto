@@ -294,11 +294,16 @@
 }
 
 .judul-popup {
-font-weight: bolder;
-font-size: 10px;
+  font-weight: bolder;
+  font-size: 12px;
 }
 
 .desk-popup {
-  font-weight:normal;
-font-size: 8px;
+  font-weight: normal;
+  font-size: 10px;
+}
+
+.image-popup {
+  align-content: center;
+  image-rendering: optimizeSpeed;
 }
