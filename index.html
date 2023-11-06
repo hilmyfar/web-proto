@@ -316,7 +316,7 @@
       var layerControl = new L.Control.AccordionLegend({
         position: "topleft",
         content: LAYERS_AND_LEGENDS,
-      }).addTo(map).toggleLayer("Google Satellite",on);
+      }).toggleLayer("Google Satellite",on).addTo(map);
 
       var htmlObject = layerControl.getContainer();
       var layersTab = document.getElementById("layer-control-container");
