@@ -199,8 +199,6 @@ L.Control.AccordionLegend = L.Control.extend({
 
     // collapse the UI
     // and trigger a section now so as to update the + and - signs on the sections
-    this.collapseUI();
-    this.expandSection(sections[0].title);
 
     // and we're done!
     return maindiv;
@@ -257,7 +255,7 @@ L.Control.AccordionLegend = L.Control.extend({
   },
   toggleUI: function () {
     var viz = L.DomUtil.hasClass(this.panel, "leaflet-control-accordionlegend-panel-hidden");
-    viz ? this.expandUI() : this.collapseUI();
+    viz ? this.expandUI();
 
     // return myself cuz method chaining is awesome
     return this;
@@ -283,23 +281,7 @@ L.Control.AccordionLegend = L.Control.extend({
     // return myself cuz method chaining is awesome
     return this;
   },
-  collapseSection: function (sectionname) {
-    var control = this;
-    Object.keys(this.titlebarRegistry).forEach(function (thistitle) {
-      if (sectionname !== thistitle) return; // not the one we want, not interested
-
-      // collapse this section, plain and simple
-      var sectitle = control.titlebarRegistry[sectionname][0];
-      var secdiv = control.titlebarRegistry[sectionname][1];
-      var triangle = control.titlebarRegistry[sectionname][2];
-
-      L.DomUtil.addClass(secdiv, "accordionlegend-section-hidden");
-      triangle.innerHTML = "+";
-    });
-
-    // return myself cuz method chaining is awesome
-    return this;
-  },
+ 
   toggleSection: function (sectionname) {
     var control = this;
     Object.keys(this.titlebarRegistry).forEach(function (thistitle) {
