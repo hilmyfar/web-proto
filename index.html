@@ -317,7 +317,7 @@
         position: "topleft",
         content: LAYERS_AND_LEGENDS,
       }).addTo(map);
-      layerControl.expandUI();
+      layerControl.toggleLayer("Spot Potensial Desa", on ).expandUI();
 
       var htmlObject = layerControl.getContainer();
       var layersTab = document.getElementById("layer-control-container");
